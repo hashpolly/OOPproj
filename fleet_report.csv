@@ -1,0 +1,4 @@
+VIN,Type,Brand,Model,Year,Price,EngineType,Horsepower
+VIN-4,Car,Tesla,Model 3,2023,42000.00,Electric,283
+VIN-2,Truck,Volvo,FH16,2022,120000.00,Diesel,750
+VIN-3,Car,Toyota,Camry,2015,15000.00,2.5L,180
