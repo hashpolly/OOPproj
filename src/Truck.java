@@ -1,21 +1,17 @@
 public class Truck extends Vehicle implements Maintainable, Drivable {
     private double payloadCapacity;
 
-    public Truck(String vin, String brand, String model, int year, double price, String engineType, int horsepower, double payloadCapacity) {
+    public Truck(String vin, String brand, String model, int year, double price, EngineType engineType, int horsepower, double payloadCapacity) {
         super(vin, brand, model, year, price, engineType, horsepower);
         this.payloadCapacity = payloadCapacity;
     }
 
+    @Override
     public double getPayloadCapacity() { return payloadCapacity; }
 
     @Override
     public double calculateFuelEfficiency() {
         return 28.5 + (payloadCapacity * 0.5);
-    }
-
-    @Override
-    public void refuel() {
-        System.out.println(getBrand() + " " + getModel() + " refueling diesel...");
     }
 
     @Override

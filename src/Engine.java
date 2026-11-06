@@ -1,13 +1,13 @@
 public class Engine {
-    private String type;
+    private EngineType type;
     private int horsepower;
 
-    public Engine(String type, int horsepower) {
+    public Engine(EngineType type, int horsepower) {
         this.type = type;
         this.horsepower = horsepower;
     }
 
-    public String getType() { return type; }
+    public EngineType getType() { return type; }
     public int getHorsepower() { return horsepower; }
 
     public void start() {

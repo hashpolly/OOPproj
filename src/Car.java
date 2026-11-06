@@ -2,27 +2,20 @@ public class Car extends Vehicle implements Maintainable, Drivable {
     private int seatingCapacity;
     private boolean isElectric;
 
-    public Car(String vin, String brand, String model, int year, double price, String engineType, int horsepower, int seatingCapacity, boolean isElectric) {
+    public Car(String vin, String brand, String model, int year, double price, EngineType engineType, int horsepower, int seatingCapacity, boolean isElectric) {
         super(vin, brand, model, year, price, engineType, horsepower);
         this.seatingCapacity = seatingCapacity;
         this.isElectric = isElectric;
     }
 
+    @Override
     public int getSeatingCapacity() { return seatingCapacity; }
+    @Override
     public boolean isElectric() { return isElectric; }
 
     @Override
     public double calculateFuelEfficiency() {
         return isElectric ? 0.0 : 7.5;
-    }
-
-    @Override
-    public void refuel() {
-        if (isElectric) {
-            System.out.println(getBrand() + " " + getModel() + " charging EV battery...");
-        } else {
-            System.out.println(getBrand() + " " + getModel() + " refueling gasoline...");
-        }
     }
 
     @Override

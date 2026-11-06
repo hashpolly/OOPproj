@@ -9,10 +9,7 @@ public abstract class Vehicle implements Comparable<Vehicle> {
     private Engine engine;
     private GPSNavigator gpsNavigator;
 
-    public Vehicle(String vin, String brand, String model, int year, double price, String engineType, int horsepower) {
-        if (vin == null || vin.trim().isEmpty()) {
-            throw new IllegalArgumentException("VIN must not be empty");
-        }
+    public Vehicle(String vin, String brand, String model, int year, double price, EngineType engineType, int horsepower) {
         this.vin = vin.trim();
         setBrand(brand);
         setModel(model);
@@ -20,6 +17,13 @@ public abstract class Vehicle implements Comparable<Vehicle> {
         setPrice(price);
         this.engine = new Engine(engineType, horsepower);
     }
+
+
+    public double getPayloadCapacity() { return 0; }
+
+    public int getSeatingCapacity() { return 0; }
+
+    public boolean isElectric() { return false; }
 
     public String getVin() { return vin; }
 
@@ -61,7 +65,6 @@ public abstract class Vehicle implements Comparable<Vehicle> {
     }
 
     public abstract double calculateFuelEfficiency();
-    public abstract void refuel();
 
     @Override
     public boolean equals(Object o) {

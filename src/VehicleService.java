@@ -18,15 +18,36 @@ public class VehicleService {
         return true;
     }
 
-    public Vehicle findByVin(String vin) {
-        return byVin.get(vin);
+    public boolean updateVehicle(Vehicle updatedVehicle) {
+        if (updatedVehicle == null) return false;
+
+        String vin = updatedVehicle.getVin();
+        Vehicle existing = byVin.get(vin);
+        if (existing == null) {
+            System.out.println("Update failed: VIN not found");
+            return false;
+        }
+
+        vehicles.remove(existing);
+        String oldType = existing.getClass().getSimpleName();
+        List<Vehicle> group = byType.get(oldType);
+        if (group != null) {
+            group.remove(existing);
+            if (group.isEmpty()) {
+                byType.remove(oldType);
+            }
+        }
+
+        vehicles.add(updatedVehicle);
+        byVin.put(vin, updatedVehicle);
+        byType.computeIfAbsent(updatedVehicle.getClass().getSimpleName(), k -> new ArrayList<>()).add(updatedVehicle);
+
+        System.out.println("Vehicle updated: " + vin);
+        return true;
     }
 
-    public boolean updatePrice(String vin, double newPrice) {
-        Vehicle v = byVin.get(vin);
-        if (v == null) return false;
-        v.setPrice(newPrice);
-        return true;
+    public Vehicle findByVin(String vin) {
+        return byVin.get(vin);
     }
 
     public boolean removeVehicle(String vin) {
@@ -55,7 +76,7 @@ public class VehicleService {
     }
 
     public boolean submitRequest(MaintenanceRequest request) {
-        if (request == null || !byVin.containsKey(request.getVehicleVin())) {
+        if (request == null || !byVin.containsKey(request.getVehicleVin().toUpperCase())) {
             System.out.println("Request rejected: unknown VIN");
             return false;
         }
@@ -113,12 +134,12 @@ public class VehicleService {
 
     public void exportToCsv(String filepath) {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(filepath))) {
-            writer.write("VIN,Type,Brand,Model,Year,Price,EngineType,Horsepower");
+            writer.write("VIN,Type,Brand,Model,Year,Price,EngineType,Horsepower,PayloadCapacity,SeatingCapacity,IsElectric");
             writer.newLine();
             for (Vehicle v : vehicles) {
-                writer.write(String.format(Locale.US, "%s,%s,%s,%s,%d,%.2f,%s,%d",
+                writer.write(String.format(Locale.US, "%s,%s,%s,%s,%d,%.2f,%s,%d,%.2f,%d,%b",
                         v.getVin(), v.getClass().getSimpleName(), v.getBrand(), v.getModel(),
-                        v.getYear(), v.getPrice(), v.getEngine().getType(), v.getEngine().getHorsepower()));
+                        v.getYear(), v.getPrice(), v.getEngine().getType(), v.getEngine().getHorsepower(), v.getPayloadCapacity(), v.getSeatingCapacity(), v.isElectric()));
                 writer.newLine();
             }
             System.out.println("Saved to " + new File(filepath).getAbsolutePath());
@@ -131,10 +152,27 @@ public class VehicleService {
         try (BufferedReader reader = new BufferedReader(new FileReader(filepath))) {
             String line;
             while ((line = reader.readLine()) != null) {
-                System.out.println(line);
+                String[] v = line.split(",");
+                Vehicle vehicle;
+                if (v[1].equalsIgnoreCase("truck")) {
+                    vehicle = new Truck(v[0], v[2], v[3], Integer.parseInt(v[4]),
+                            Double.parseDouble(v[5]), changeDataType(v[6]), Integer.parseInt(v[7]), Double.parseDouble(v[8]));
+                }
+                else if (v[1].equalsIgnoreCase("type")) {
+                    continue;
+                }
+                else {
+                    vehicle = new Car(v[0], v[2], v[3], Integer.parseInt(v[4]),
+                            Double.parseDouble(v[5]), changeDataType(v[6]), Integer.parseInt(v[7]),
+                            Integer.parseInt(v[9]), Boolean.getBoolean(v[10]));
+                }
+                addVehicle(vehicle);
             }
         } catch (IOException e) {
             System.out.println("CSV read error: " + e.getMessage());
         }
+    }
+    private static EngineType changeDataType(String type) {
+        return EngineType.fromString(type.toUpperCase());
     }
 }

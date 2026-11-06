@@ -1,4 +1,8 @@
-VIN,Type,Brand,Model,Year,Price,EngineType,Horsepower
-VIN-4,Car,Tesla,Model 3,2023,42000.00,Electric,283
-VIN-2,Truck,Volvo,FH16,2022,120000.00,Diesel,750
-VIN-3,Car,Toyota,Camry,2015,15000.00,2.5L,180
+VIN,Type,Brand,Model,Year,Price,EngineType,Horsepower,PayloadCapacity,SeatingCapacity,IsElectric
+VIN-2,Truck,Volvo,FH16,2022,120000.00,DIESEL,750,25.00,0,false
+VIN-3,Car,Toyota,Camry,2015,15000.00,GASOLINE,180,0.00,5,false
+VIN-6,Car,honda,hr-v,2010,36478.00,DIESEL,450,0.00,10,false
+VIN-1,Car,ssg,sg,2353,35.00,ELECTRIC,354,0.00,5,false
+VIN-7,Truck,sgeg,ege,3556,3636.00,DIESEL,35,253.00,0,false
+VIN-10,Car,sgg,dgs,3636,33.00,ELECTRIC,255,0.00,5,false
+VIN-1,Car,egeg,egeg,3535,35353.00,ELECTRIC,3453,0.00,5,true

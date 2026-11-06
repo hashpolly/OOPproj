@@ -11,10 +11,7 @@ public class MaintenanceRequest {
         this.issueDescription = issueDescription;
     }
 
-    public String getRequestId() { return requestId; }
     public String getVehicleVin() { return vehicleVin; }
-    public String getClientName() { return clientName; }
-    public String getIssueDescription() { return issueDescription; }
 
     @Override
     public String toString() {
